@@ -13,8 +13,11 @@ const rateLimit = require('express-rate-limit')
 const cors = require('cors')
 const auth = require("./routes/auth.routes")
 const package = require("./routes/package.routes")
+const destination = require("./routes/destination.routes")
 const booking = require("./routes/booking.routes")
 const user = require("./routes/user.routes")
+const review = require("./routes/review.routes")
+const partner = require("./routes/partner.routes")
 /**
  * Load env variables
  */
@@ -72,8 +75,11 @@ app.use(express.static('public'));
 // app.use("/api", facility) 
 app.use("/api/auth", auth)
 app.use("/api/user", user)
+app.use("/api/destination",destination)
 app.use("/api/package",package)
+app.use("/api/review",review)
 app.use("/api/book",booking)
+app.use("/api/partner",partner)
 
 // app.use("/api/", facility_v2) 
 app.use(errorHandler)

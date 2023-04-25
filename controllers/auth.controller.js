@@ -105,7 +105,10 @@ const setTokenResponse = (user,statusCode, res)=>{
     .cookie('refresh_token', refresh_token, option)
     .json({
         success:true,
-        token
+        token,
+        name:`${user?.firstName} ${user?.lastName}`,
+        username:user?.username,
+        role:user?.role
     })
 
 }

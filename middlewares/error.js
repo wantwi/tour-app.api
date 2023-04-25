@@ -5,19 +5,33 @@ const errorHandler = (err, req,res, next) => {
     // console.log(req.url);
     // console.log(req._parsedUrl);
 
-
+    let error = {...err}
   
    
     if(req.method ==="POST" && req.url.includes('/api/package')){
        console.log('====================================');
-       unlinkFiles(req.body.gallery)
-       unlinkFiles([req.body.coverImage])
+       unlinkFiles(req?.body?.gallery)
+       unlinkFiles([req?.body?.coverImage])
        console.log("remove saved image files");
        console.log('====================================');
     }
+    if(req.method ==="POST" && req.url.includes('/api/destination')){
+        console.log('====================================');
+        console.log(error);
+        console.log('====================================');
+        console.log('====================================');
+            if(req.body?.gallery && req.body?.coverImage){
+                unlinkFiles(req?.body?.gallery)
+                unlinkFiles([req?.body?.coverImage])
+                console.log("remove saved image files");
 
+            }
+       
+        console.log('====================================');
+     }
+ 
   
-    let error = {...err}
+   
 
     error.message =  err.message
    

@@ -1,4 +1,3 @@
-const Package = require("../models/package.model");
 const Destination = require("../models/destination.model");
 const ErrorReponse = require("../utils/errorResponse");
 const asyncHandler = require("../middlewares/async");
@@ -7,29 +6,30 @@ const { unlinkFiles } = require("../utils/utils");
 exports.create = asyncHandler(async (req, res, next) => {
   req.body.gallery = req.files.gallery.map((x) => x.filename);
   req.body.coverImage = req.files.coverImage.map((x) => x.filename)[0];
+  req.body.user = req.user?._id
 
-  const package = await Package.create({ ...req.body });
+  const destination = await Destination.create({ ...req.body });
   res.status(201).json({
     success: true,
-    data: package,
+    data: destination,
   });
 });
 
 exports.getAll = asyncHandler(async (req, res, next) => {
-  const package = await Package.find({}).populate("destination");
+  const destinations = await Destination.find({});
   res.status(200).json({
     success: true,
-    data: package,
+    data: destinations,
   });
 });
 
 exports.getById = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
 
-  const package = await Package.findById(id);
+  const destination = await Destination.findById(id);
   res.status(200).json({
     success: true,
-    data: package,
+    data: destination,
   });
 });
 
@@ -46,43 +46,27 @@ exports.update = asyncHandler(async (req, res, next) => {
 
   var newvalues = { $set: obj };
 
-  const package = await Package.findByIdAndUpdate(id, newvalues);
+  const destination = await Destination.findByIdAndUpdate(id, newvalues);
   res.status(200).json({
     success: true,
-    data: package,
+    data: destination,
   });
 });
 
 exports.remove = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
   let arr = []
-  const getPackage = await Package.findById(id)
+  const response = await Destination.findById(id)
   
   
 
-  const package = await Package.findByIdAndDelete(id);
-  const {coverImage,gallery } = getPackage
+  const package = await Destination.findByIdAndDelete(id);
+  const {coverImage,gallery } = response
    arr = [...gallery,coverImage]
    if(arr.length > 0){
     unlinkFiles(arr)
    }
   res.status(200).json({
     success: true,
-  });
-});
-
-
-exports.getByDestinationId = asyncHandler(async (req, res, next) => {
-  const { id } = req.params;
-
-  const findDestination = await Destination.find({id})
-  if(!findDestination){
-    return next(new ErrorReponse('Destination not found', 204))
-  }
-
-  const package = await Package.find({destination: id});
-  res.status(200).json({
-    success: true,
-    data: package,
   });
 });

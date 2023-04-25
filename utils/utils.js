@@ -43,20 +43,26 @@ const storage = multer.diskStorage({
      
     }
   })
-const upload  = (file,files)=> multer({storage}).fields([{ name: file, maxCount: 1 },{ name: files }])
+const upload  = (file="",files=[])=> multer({storage}).fields([{ name: file, maxCount: 1 },{ name: files }])
 
 const unlinkFiles = (files) => {
+    console.log(files);
    
-    files.forEach(element => {
-        fs.unlink(`${process.env.UPLOAD_PATH}/${element}`, (err) => {
-            if (err) {
-                throw err;
-            }
-            console.log("Delete File successfully.".green);
-        });
-        
-     });
-
+    try {
+        files.forEach(element => {
+            fs.unlink(`${process.env.UPLOAD_PATH}/${element}`, (err) => {
+                if (err) {
+                    throw err;
+                }
+                console.log("Delete File successfully.".green);
+            });
+            
+         });
+    
+    } catch (error) {
+        console.log(error);
+    }
+    
 }
 
 

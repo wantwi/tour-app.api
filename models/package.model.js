@@ -32,17 +32,23 @@ const packageSchema = new mongoose.Schema({
     endData: {
         type: Date
     },
+    duration:{
+        type: String,
+    },
+    addOns:{
+        type: [Object]
+    },
     registrationFee:{
         type: Number,
         default:0
     },
-    minPrice:{
+    price:{
         type: Number,
         default:0
     },
-    maxPrice:{
+    rating:{
         type: Number,
-        default:0
+        default:5
     },
     currency:{
         type: String,
@@ -57,6 +63,11 @@ const packageSchema = new mongoose.Schema({
         required: [true, "Please add gallery images."],
       
     },
+     destination: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: [true, "Please add destination"],
+        ref: "destination"
+    }
     // packageOwners: {
     //     type: [mongoose.Schema.Types.ObjectId],
     //     ref: "users"
